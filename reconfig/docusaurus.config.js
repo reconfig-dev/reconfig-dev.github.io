@@ -9,14 +9,14 @@ const config = {
   title: 'Reconfig',
   tagline: 'Technical Articles about Reconfigurable Computing',
   url: 'https://syed-ahmed.github.io',
-  baseUrl: '/',
+  baseUrl: '/reconfig/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   trailingSlash: false,
   organizationName: 'syed-ahmed', // Usually your GitHub org/user name.
   projectName: 'reconfig', // Usually your repo name.
-  plugins: ['@docusaurus/plugin-ideal-image'],
+
   presets: [
     [
       '@docusaurus/preset-classic',
