@@ -8,13 +8,15 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Reconfig',
   tagline: 'Technical Articles about Reconfigurable Computing',
-  url: 'https://reconfig.dev',
+  url: 'https://syed-ahmed.github.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
+  trailingSlash: false,
   organizationName: 'syed-ahmed', // Usually your GitHub org/user name.
   projectName: 'reconfig', // Usually your repo name.
+  plugins: ['@docusaurus/plugin-ideal-image'],
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -22,6 +24,12 @@ const config = {
       ({
         docs: false,
         blog: {
+          feedOptions: {
+            type: 'all',
+            copyright: `Copyright © ${new Date().getFullYear()} Syed Tousif Ahmed.`,
+          },
+          blogTitle: 'Reconfig',
+          blogDescription: 'Technical Articles about Reconfigurable Computing.',
           path: './blog',
           routeBasePath: '/',
           showReadingTime: true,
