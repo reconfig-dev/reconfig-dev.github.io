@@ -29,7 +29,7 @@ const config = {
             copyright: `Copyright © ${new Date().getFullYear()} Syed Tousif Ahmed.`,
           },
           blogTitle: 'Reconfig',
-          blogDescription: 'Technical Articles about Reconfigurable Computing.',
+          blogDescription: 'Technical Articles on Reconfigurable Computing.',
           path: './blog',
           routeBasePath: '/',
           showReadingTime: true,
