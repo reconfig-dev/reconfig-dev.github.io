@@ -9,7 +9,7 @@ const config = {
   title: 'Reconfig',
   tagline: 'Technical Articles about Reconfigurable Computing',
   url: 'https://syed-ahmed.github.io',
-  baseUrl: '/reconfig/',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
