@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://syed-ahmed.github.io/reconfig/</id>
+    <id>https://syed-ahmed.github.io/</id>
     <title>Reconfig Blog</title>
     <updated>2020-06-02T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://syed-ahmed.github.io/reconfig/"/>
+    <link rel="alternate" href="https://syed-ahmed.github.io/"/>
     <subtitle>Reconfig Blog</subtitle>
-    <icon>https://syed-ahmed.github.io/reconfig/img/favicon.ico</icon>
+    <icon>https://syed-ahmed.github.io/img/favicon.ico</icon>
     <rights>Copyright © 2021 Syed Tousif Ahmed.</rights>
     <entry>
         <title type="html"><![CDATA[Creating Vivado Hardware Platform using YAML]]></title>
         <id>yaml-based-vivado-hardware-project</id>
-        <link href="https://syed-ahmed.github.io/reconfig/yaml-based-vivado-hardware-project"/>
+        <link href="https://syed-ahmed.github.io/yaml-based-vivado-hardware-project"/>
         <updated>2020-06-02T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[The hardware design community have been following a design paradigm where you think of designing hardware spatially, i.e. start with a block diagram. I remember from my undergraduate logic design course, a block diagram was required before we started a lab assignment. It is the right approach for designing hardware. Vivado reinforces this paradigm by asking people to open the Vivado GUI, use the IP integrator and create a block design.]]></summary>
         <content type="html"><![CDATA[<p>The hardware design community have been following a design paradigm where you think of designing hardware spatially, i.e. start with a block diagram. I remember from my undergraduate logic design course, a block diagram was required before we started a lab assignment. It is the right approach for designing hardware. Vivado reinforces this paradigm by asking people to open the Vivado GUI, use the IP integrator and create a block design. </p><p>An alternative to the GUI are the Vivado TCL commands. TCL is the scripting language of the hardware design community. If you wanted to generate block designs based on some input parameters, you would be using TCL. If you are developing on a headless server, you would have no other choice than to use TCL.
@@ -163,7 +163,7 @@ Now if you are wondering, why YAML? It&#x27;s solely because of <a href="https:/
     <entry>
         <title type="html"><![CDATA[Use All Tunable Vivado Internal Params]]></title>
         <id>vivado-internal-params</id>
-        <link href="https://syed-ahmed.github.io/reconfig/vivado-internal-params"/>
+        <link href="https://syed-ahmed.github.io/vivado-internal-params"/>
         <updated>2020-03-31T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[So I learned about this parameter that can be set in vivado, called place.debugShape, for my overlay generation work. It was referred in one of the tcl scripts in RapidWright with the command setparam place.debugShape $shapesFileName. Studying the tcl commands guide, I found out, you can list the description of this property using reportparam -nondefault, which suggests place.debugShape is an internal knob. A caveat of the reportparam command is that, it only lists these internal params when it is changed from its default value (you can know its default value by getparam). That is, reportparam -non_default won't show you all the internal knobs that are in vivado.]]></summary>
         <content type="html"><![CDATA[<p>So I learned about this parameter that can be set in vivado, called <code>place.debugShape</code>, for my overlay generation work. It was referred in one of the tcl scripts in RapidWright with the command <code>set_param place.debugShape $shapesFileName</code>. Studying the tcl commands guide, I found out, you can list the description of this property using <code>report_param -non_default</code>, which suggests <code>place.debugShape</code> is an internal knob. A caveat of the report_param command is that, it only lists these internal params when it is changed from its default value (you can know its default value by <code>get_param</code>). That is, <code>report_param -non_default</code> won&#x27;t show you all the internal knobs that are in vivado. </p><p>Now that you have some context, it got me thinking are there other useful params which we should know about? Looks like somebody asked the same <a href="https://forums.xilinx.com/t5/Vivado-TCL-Community/lt-list-param-gt-not-listing-a-lot/td-p/998194">question</a> in Xilinx&#x27;s forum, but received a reply from Xilinx saying those are internal and thou shall not use it.

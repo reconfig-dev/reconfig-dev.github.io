@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[457],{4773:function(a){a.exports=JSON.parse('{"allTagsPath":"/reconfig/tags","slug":"/reconfig/tags/vivado","name":"vivado","count":2,"permalink":"/reconfig/tags/vivado"}')}}]);

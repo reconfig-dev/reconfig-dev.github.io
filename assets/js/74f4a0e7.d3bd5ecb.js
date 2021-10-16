@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[818],{9700:function(a){a.exports=JSON.parse('{"allTagsPath":"/tags","slug":"/tags/vivado","name":"vivado","count":2,"permalink":"/tags/vivado"}')}}]);
