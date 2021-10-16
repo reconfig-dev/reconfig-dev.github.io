@@ -62,7 +62,7 @@ const config = {
             label: 'Atom',
             position: 'right',
           },
-          {href: './', label: '| Technical Articles on Reconfigurable Computing', position: 'left'},
+          {href: './', label: 'Technical Articles on Reconfigurable Computing', position: 'left'},
         ],
       },
       footer: {
