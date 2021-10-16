@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0">
     <channel>
         <title>Reconfig Blog</title>
         <link>https://reconfig.dev/</link>
@@ -14,147 +14,6 @@
             <guid>yaml-based-vivado-hardware-project</guid>
             <pubDate>Tue, 02 Jun 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[The hardware design community have been following a design paradigm where you think of designing hardware spatially, i.e. start with a block diagram. I remember from my undergraduate logic design course, a block diagram was required before we started a lab assignment. It is the right approach for designing hardware. Vivado reinforces this paradigm by asking people to open the Vivado GUI, use the IP integrator and create a block design.]]></description>
-            <content:encoded><![CDATA[<p>The hardware design community have been following a design paradigm where you think of designing hardware spatially, i.e. start with a block diagram. I remember from my undergraduate logic design course, a block diagram was required before we started a lab assignment. It is the right approach for designing hardware. Vivado reinforces this paradigm by asking people to open the Vivado GUI, use the IP integrator and create a block design. </p><p>An alternative to the GUI are the Vivado TCL commands. TCL is the scripting language of the hardware design community. If you wanted to generate block designs based on some input parameters, you would be using TCL. If you are developing on a headless server, you would have no other choice than to use TCL.
-TCL programming is not bad, however, I&#x27;m very used to Python as my scripting language of choice. If you wanted to generate a block design that was data driven (for instance, use the decisions made by a PyTorch ML model or a Google OR-Tools model), you would need to introduce Python into the picture because TCL doesn&#x27;t have such packages.
-If Python was a front-end for Vivado, our problem would have been solved! So how do we go from Python to TCL? People follow different approaches. You could write a Python script that generates a TCL file with the desired commands and parameters. You could use <a href="http://elmer.sourceforge.net/examples.html">elmer</a> to call Python from TCL (for instance, fork into a python class, get values from it and feed it to your TCL command), but elmer doesn&#x27;t work for Python3. While writing this post, I came to know about Olof Kindgren&#x27;s <a href="https://github.com/olofk/edalize">edalize</a> project! I&#x27;m taking a similar approach to this project, i.e. have a templated TCL script and use Python to feed those template parameters.
-I generate a <code>yaml</code> configuration file from python and parse it in a TCL script. TCL has a yaml parser and can parse it to a TCL dictionary. You can then use the values from the dictionary in generic TCL functions. I discovered this <a href="https://github.com/Xilinx/wireless-apps/tree/master/scripts">repository</a> from Xilinx which uses a yaml configuration file in a TCL script to generate a vivado project. In addition, I found this excellent <a href="https://github.com/Xilinx/Vitis-AI/tree/master/DPU-TRD/prj/Vivado/scripts">Vivado hardware platform project</a> from Xilinx that uses TCL dicts to fully parameterize the generation of a block design. Combining these two, I have the approach on the right hand side.</p><p>Consider the following <code>yaml</code> file for one of our projects:</p><pre><code>dict_prj:
-  dict_sys:
-    bd_name: floorplan_static
-    bd_ooc: Hierarchical
-    prj_board: em.avnet.com:ultra96v2:part0:1.0
-    prj_name: floorplan_static
-    prj_part: xczu3eg-sbva484-1-e
-  dict_stgy:
-    synth:
-      synth_1:
-        STRATEGY: &quot;&quot;
-        JOBS: 40
-    impl:
-      impl_1_01:
-        PARENT: &quot;&quot;
-        STRATEGY: &quot;&quot;
-        JOBS: 40
-      impl_1_03:
-        PARENT: &quot;&quot;
-        STRATEGY: &quot;&quot;
-        JOBS: 40
-      impl_1_14:
-        PARENT: &quot;&quot;
-        STRATEGY: &quot;&quot;
-        JOBS: 40
-      impl_1_15:
-        PARENT: &quot;&quot;
-        STRATEGY: &quot;&quot;
-        JOBS: 40
-  dict_xdc:
-    -
-      NAME: pblocks.xdc
-      IS_TARGET: True
-  dict_src:
-    -
-      NAME: AxiLite2Bft_v2_0.v
-    -
-      NAME: converter.v
-      ...
-  dict_hier:
-    h_bft:
-      PATH: bft
-  dict_ip:
-    ip_ps:
-      PATH: zynq_ultra_ps_e_0
-      NAME: zynq_ultra_ps_e
-      VLNV: &quot;&quot;
-      PROP:
-        PSU__CRL_APB__PL1_REF_CTRL__ACT_FREQMHZ: &quot;19.660831&quot;
-        PSU__FPGA_PL1_ENABLE: &quot;1&quot;
-        PSU__CRL_APB__PL1_REF_CTRL__SRCSEL: RPLL
-        PSU__PL_CLK1_BUF: &quot;TRUE&quot;
-        PSU__SAXIGP2__DATA_WIDTH: &quot;32&quot;
-        PSU__USE__S_AXI_GP2: 1
-      BACFG:
-        apply_board_preset: 1
-    ip_clk_rst_usr:
-      PATH: rst_ps8_0_100M
-      NAME: proc_sys_reset
-      VLNV: &quot;&quot;
-      PROP: &quot;&quot;
-      BACFG: &quot;&quot;
-      ...
-  dict_pin:
-    p_bft_S00_AXI:
-      CLASS: INTF_PIN
-      PATH: &quot;bft/S00_AXI&quot;
-      MODE: Slave
-      VLNV: &quot;xilinx.com:interface:aximm_rtl:1.0&quot;
-      ...
-  dict_cn:
-    cn_overlay:
-      PIN intf PIN:
-        zynq_ultra_ps_e_0/S_AXI_HP0_FPD: bft/M00_AXI
-        zynq_ultra_ps_e_0/M_AXI_HPM0_FPD: bft/S00_AXI
-        zynq_ultra_ps_e_0/M_AXI_HPM1_FPD: bft/S01_AXI
-        ...
-      PIN from PIN:
-        bft/bft_0/dout_leaf_0: bft/AxiLite2Bft_v2_0_0/host_interface2bft
-        bft/leaf_interface_0/din_leaf_user2interface: bft/axi_dma_0/m_axis_mm2s_tdata
-        bft/leaf_interface_0/vld_user2interface: bft/axi_dma_0/m_axis_mm2s_tvalid
-        bft/xlconcat_0/In0: bft/axi_dma_0/mm2s_introut
-        bft/xlconcat_0/In1: bft/axi_dma_1/s2mm_introut
-        ...
-  dict_addr:
-    addr_s00_axi:
-      REG: bft/AxiLite2Bft_v2_0_0/s00_axi/reg0
-      RANGE: 0x00001000
-      OFFSET: 0xA0002000
-    ...
-</code></pre><p>You can see that we have parameterized part and board numbers, since we want to support multiple boards with the same design. The PS IP is also parameterized since we want to support Zynq 7 series and Zynq UltraScale+. Similarly, you can see synthesis and implementation strategies are now parameterized, which means more design space exploration! Even connections of pins - we can now configure that with a python script if we want to generate a different overlay.</p><p>Following is how we are parsing the yaml in the TCL script:</p><pre><code>#****************************************************************
-# check if file exists
-#****************************************************************
-proc lib_check_file { file_name } {
-    set file_content &quot;&quot;
-    if { [ file exists  $file_name ] } {
-        set fp [open $file_name r]
-        set file_content [read $fp]
-        close $fp
-    } else {
-        lib_error YAML &quot;Cannot open filename $file_name...&quot;
-    }
-    return $file_content
-}
-
-#****************************************************************
-# load yaml file into dict
-#****************************************************************
-proc lib_yaml2dict { file_name } {
-    set file_content [ lib_check_file $file_name ]
-    return [yaml::yaml2dict $file_content]
-}
-
-#****************************************************************
-# set global dict_prj
-#****************************************************************
-set dict_prj  {}
-
-set config_file &quot;config.yaml&quot;
-set cfg [lib_yaml2dict $config_file]
-set dict_prj [dict get $cfg dict_prj]
-</code></pre><p>The rest of the script is then from <a href="https://github.com/Xilinx/Vitis-AI/tree/master/DPU-TRD/prj/Vivado/scripts">Xilinx&#x27;s Vitis-AI repository</a>.
-Now if you are wondering, why YAML? It&#x27;s solely because of <a href="https://hydra.cc/">hydra</a>. Hydra&#x27;s ability to compose a yaml file from a hierarchy of yaml files is a stunning feature that lets me focus on the parameters that matter in my project, and exactly fits our use case of supporting multiple moving things. For instance, Vivado is not backwards compatible and a set of parameters that worked in <code>2018.3</code> might not work in <code>2019.2</code>, for each board, Zynq7 and Zynq UltraScale+ PS parameters are different, and so on. Following is what my hydra conf looks like:</p><pre><code>├── conf
-│   ├── architecture
-|   ├── board
-|       ├── pynq_z1.yaml
-|       ├── ultra96v2.yaml
-|       ├── zcu102.yaml
-|       ├── zed.yaml
-│   ├── vivado
-|       ├── 2018.3
-|           ├── ultra96v2.yaml
-|           ├── zcu102.yaml
-|       ├── 2019.2
-|           ├── zed.yaml
-|   ├── config.yaml
-└── generate_vivado_project.py
-</code></pre><p>I can then execute the <code>generate_vivado_project.py</code> script with the command line parameters, such as <code>board=zed.yaml</code>, <code>vivado=2019.2</code> and it will generate a <code>config.yaml</code> which is the composition of the yaml files from the respective <code>conf</code> subdirectories. And now you can just source the tcl file with this config file! As a result, block design in vivado becomes a matter of writing a <code>yaml</code> file. </p><p>Now some cons of this approach - I have to find the names of the parameters, such as the Zynq IP parameters, AXI DMA parameters by trial-error in the GUI and then note it down in my configuration. This could be easily mitigated if all these parameters are nicely documented somewhere (or alternatively you could actually finish the design in GUI, export the TCL file and then note down the parameters from that TCL file...). Moreover, I like connecting the input and output of a block in the GUI than manually writing it in the <code>yaml</code> file. Hence, the way I see it, if you are prototyping and playing around with ideas, GUI approach is more flexible as I&#x27;m able to see the design like I would have done in my logic design lab assignments, whereas, when doing automation around generating hardware, templated TCL scripts with a configuration file is the way to go :).</p>]]></content:encoded>
         </item>
         <item>
             <title><![CDATA[Use All Tunable Vivado Internal Params]]></title>
@@ -162,32 +21,6 @@ Now if you are wondering, why YAML? It&#x27;s solely because of <a href="https:/
             <guid>vivado-internal-params</guid>
             <pubDate>Tue, 31 Mar 2020 00:00:00 GMT</pubDate>
             <description><![CDATA[So I learned about this parameter that can be set in vivado, called place.debugShape, for my overlay generation work. It was referred in one of the tcl scripts in RapidWright with the command setparam place.debugShape $shapesFileName. Studying the tcl commands guide, I found out, you can list the description of this property using reportparam -nondefault, which suggests place.debugShape is an internal knob. A caveat of the reportparam command is that, it only lists these internal params when it is changed from its default value (you can know its default value by getparam). That is, reportparam -non_default won't show you all the internal knobs that are in vivado.]]></description>
-            <content:encoded><![CDATA[<p>So I learned about this parameter that can be set in vivado, called <code>place.debugShape</code>, for my overlay generation work. It was referred in one of the tcl scripts in RapidWright with the command <code>set_param place.debugShape $shapesFileName</code>. Studying the tcl commands guide, I found out, you can list the description of this property using <code>report_param -non_default</code>, which suggests <code>place.debugShape</code> is an internal knob. A caveat of the report_param command is that, it only lists these internal params when it is changed from its default value (you can know its default value by <code>get_param</code>). That is, <code>report_param -non_default</code> won&#x27;t show you all the internal knobs that are in vivado. </p><p>Now that you have some context, it got me thinking are there other useful params which we should know about? Looks like somebody asked the same <a href="https://forums.xilinx.com/t5/Vivado-TCL-Community/lt-list-param-gt-not-listing-a-lot/td-p/998194">question</a> in Xilinx&#x27;s forum, but received a reply from Xilinx saying those are internal and thou shall not use it.
-When using the <code>place.debugShape</code> in my scripts, I saw some outputs:</p><pre><code>Shape builder is called from:
-Stack:
-/opt/Xilinx/Vivado/2018.3/lib/lnx64.o/librdi_place.so(HAPLPlacerShapeBuilder::buildShapes(HDPLNewShapeDB&amp;, HSTPtrHashSet&amp;, HDPLTask&amp;, HAPLPlaceApi*, HDPLControlSetDB const*,
-/opt/Xilinx/Vivado/2018.3/lib/lnx64.o/librdi_implflow.so(HAPLFFastFlow3::place(HAPLFFastFlowParam const&amp;, HAPLFMigPblockInfo const*)+0x12cf) [0x7f51a8e7bb3f]
-/opt/Xilinx/Vivado/2018.3/lib/lnx64.o/libtcl8.5.so(+0x334af) [0x7f51ccef74af]
-</code></pre><p>which looked like a familiar pattern - a frontend (tcl) binding to a C++ backend. So I was like, ok, may be if I grep the object dump of one of these <code>.so</code>, I could get the params? That didn&#x27;t work. But what did work was, when I treated the <code>.so</code> in grep as a text file and searched for a &quot;something-dot-camelCase&quot; pattern, and voila, everything was in plain sight:</p><pre><code>place.debugCongestion
-place.debugCrash
-place.debugFFGroup
-place.debugLightTimer
-place.debugMacroInterleavingOptimization
-place.debugShape
-place.debugShapeAppend
-place.debugWireLen
-...
-</code></pre><p>And many more such as:</p><pre><code>logicopt.allowEmptyHierCellNets
-logicopt.allowEmptyHierCells
-logicopt.allowInverterPushing
-logicopt.annotateModifiedPrims
-logicopt.applyFinishingTouch
-logicopt.applyLogicProp
-logicopt.applyPostPwroptCleanup
-logicopt.applyRestruct
-...
-</code></pre><p>Similarly, there are tuneable params that look like <code>synth.*</code>, <code>route.*</code>, <code>power.*</code>, <code>timing.*</code>. in their respective <code>librdi_*.so</code>. That&#x27;s all for this post. May be if you have a use-case, where you wanted vivado to do something, but it&#x27;s not visible, one of these parameters might come into use! Of course I get Xilinx&#x27;s point about these being internal knobs ;).</p><p>FYI following is the command with regex I used:</p><pre><code>grep -a -o -E &#x27;[a-zA-Z0-9]{3,}.[a-z]([a-z0-9][A-Z][A-Z0-9][a-z]|[A-Z0-9][a-z][a-z0-9][A-Z])[a-ZA-Z0-9]{3,}&#x27; /opt/Xilinx/Vivado/2018.3/lib/lnx64.o/librdi_place.so
-</code></pre><p>You can find about 5000 of the params I scraped, in this repository: <a href="https://github.com/syed-ahmed/vivado-hacks">https://github.com/syed-ahmed/vivado-hacks</a></p>]]></content:encoded>
         </item>
     </channel>
 </rss>
