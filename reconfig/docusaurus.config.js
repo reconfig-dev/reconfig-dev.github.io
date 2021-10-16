@@ -8,13 +8,13 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Reconfig',
   tagline: 'Technical Articles about Reconfigurable Computing',
-  url: 'https://syed-ahmed.github.io',
+  url: 'https://reconfig.dev',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   trailingSlash: false,
-  organizationName: 'syed-ahmed', // Usually your GitHub org/user name.
+  organizationName: 'reconfig-dev', // Usually your GitHub org/user name.
   projectName: 'reconfig', // Usually your repo name.
 
   presets: [
@@ -35,7 +35,7 @@ const config = {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/syed-ahmed/reconfig/edit/main/reconfig/blog/',
+            'https://github.com/reconfig-dev/reconfig/edit/main/reconfig/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -53,10 +53,16 @@ const config = {
         },
         items: [
           {
-            href: 'https://github.com/syed-ahmed/reconfig',
-            label: 'GitHub',
+            href: 'https://reconfig.dev/rss.xml',
+            label: 'RSS',
             position: 'right',
           },
+          {
+            href: 'https://reconfig.dev/atom.xml',
+            label: 'Atom',
+            position: 'right',
+          },
+          {href: './', label: '| Technical Articles on Reconfigurable Computing', position: 'left'},
         ],
       },
       footer: {
