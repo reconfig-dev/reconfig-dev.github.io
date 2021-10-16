@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[550],{9367:function(a){a.exports=JSON.parse('{"allTagsPath":"/reconfig/tags","slug":"/reconfig/tags/fpga","name":"fpga","count":2,"permalink":"/reconfig/tags/fpga"}')}}]);

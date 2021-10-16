@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[243],{8390:function(e){e.exports=JSON.parse('{"permalink":"/reconfig/","page":1,"postsPerPage":10,"totalPages":1,"totalCount":2,"previousPage":null,"nextPage":null,"blogDescription":"Technical Articles about Reconfigurable Computing.","blogTitle":"Reconfig"}')}}]);
