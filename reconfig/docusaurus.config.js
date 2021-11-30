@@ -6,23 +6,28 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Reconfig',
-  tagline: 'Technical Articles about Reconfigurable Computing',
-  url: 'https://reconfig.dev',
+  title: 'Syed Tousif Ahmed',
+  tagline: 'Computer Engineer',
+  url: 'https://syed-ahmed.github.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   trailingSlash: false,
-  organizationName: 'reconfig-dev', // Usually your GitHub org/user name.
-  projectName: 'reconfig', // Usually your repo name.
+  organizationName: 'syed-ahmed', // Usually your GitHub org/user name.
+  projectName: 'syed-ahmed.github.io', // Usually your repo name.
 
   presets: [
     [
       '@docusaurus/preset-classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
-        docs: false,
+        docs: {
+          sidebarPath: require.resolve('./sidebars.js'),
+          // Please change this to your repo.
+          path: './docs',
+          routeBasePath: '/',
+        },
         blog: {
           feedOptions: {
             type: 'all',
@@ -31,11 +36,10 @@ const config = {
           blogTitle: 'Reconfig',
           blogDescription: 'Technical Articles on Reconfigurable Computing.',
           path: './blog',
-          routeBasePath: '/',
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/reconfig-dev/reconfig/edit/main/reconfig/blog/',
+            'https://github.com/syed-ahmed/syed-ahmed.github.io/edit/main/reconfig/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -47,22 +51,29 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        logo: {
-          alt: 'Reconfig logo',
-          src: 'img/logo.svg',
-        },
         items: [
           {
-            href: 'https://reconfig.dev/rss.xml',
-            label: 'RSS',
+            type: 'doc',
+            docId: 'intro',
+            position: 'left',
+            label: 'Syed Tousif Ahmed',
+          },
+          {to: '/blog', label: 'Blog', position: 'right'},
+          {
+            href: 'https://syed-ahmed.github.io/rss.xml',
             position: 'right',
+            className: 'header-rss-link',
           },
           {
-            href: 'https://reconfig.dev/atom.xml',
-            label: 'Atom',
+            href: 'https://github.com/syed-ahmed/',
             position: 'right',
+            className: 'header-github-link',
           },
-          {href: './', label: 'Technical Articles on Reconfigurable Computing', position: 'left'},
+          {
+            href: 'https://twitter.com/tousifsays',
+            position: 'right',
+            className: 'header-twitter-link',
+          },
         ],
       },
       footer: {
