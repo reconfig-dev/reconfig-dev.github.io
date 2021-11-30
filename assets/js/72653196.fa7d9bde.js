@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[875],{8097:function(a){a.exports=JSON.parse('{"allTagsPath":"/tags","slug":"/tags/yaml","name":"yaml","count":1,"permalink":"/tags/yaml"}')}}]);

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[976],{2604:function(s){s.exports=JSON.parse('{"allTagsPath":"/tags","slug":"/tags/tcl","name":"tcl","count":2,"permalink":"/tags/tcl"}')}}]);

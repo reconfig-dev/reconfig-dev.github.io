@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[535],{5641:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Creating Vivado Hardware Platform using YAML","permalink":"/yaml-based-vivado-hardware-project"},{"title":"Use All Tunable Vivado Internal Params","permalink":"/vivado-internal-params"}]}')}}]);

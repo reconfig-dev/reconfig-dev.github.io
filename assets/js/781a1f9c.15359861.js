@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkreconfig=self.webpackChunkreconfig||[]).push([[89],{2307:function(a){a.exports=JSON.parse('{"allTagsPath":"/tags","slug":"/tags/hydra","name":"hydra","count":1,"permalink":"/tags/hydra"}')}}]);
